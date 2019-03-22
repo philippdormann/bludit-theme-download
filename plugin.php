@@ -14,7 +14,7 @@ class themeDownload extends Plugin{
             $zip = new ZipArchive;
             $res = $zip->open("theme_to_install.zip");
             if ($res) {
-                $zip->extractTo(HTML_PATH_THEMES);
+                $zip->extractTo(PATH_THEMES);
                 $zip->close();
             } else {
                 $error = -2;
@@ -33,6 +33,7 @@ class themeDownload extends Plugin{
                 echo 'An unexpected error happend (error code: -9)<br><a href="'.HTML_PATH_ADMIN_ROOT.'">go back to admin page</a>';
                 break;
             }
+            unlink("theme_to_install.zip");
         }
     }
     
