@@ -2,5 +2,14 @@
 	"plugin-data": {
 		"name": "Theme Download",
 		"description": "Automated Theme Download + Install"
-	}
+	},
+	"plugin_name": "Theme Downloader",
+	"install_button": "Install",
+	"more_information": "More Information",
+	"info": "Info",
+	"search_for_anything": "search for a theme...",
+	"js_required": "This plugin requires JS to be enabled",
+	"description": "description",
+	"version": "version",
+	"author": "author"
 }

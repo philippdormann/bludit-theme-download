@@ -1,0 +1,15 @@
+{
+	"plugin-data": {
+		"name": "Theme Downloader",
+		"description": "Automatischer Theme Downloader + Installer"
+	},
+	"plugin_name": "Theme Downloader",
+	"install_button": "Installieren",
+	"more_information": "Mehr Informationen",
+	"info": "Info",
+	"search_for_anything": "suche nach einem Design...",
+	"js_required": "für dieses Plugin muss Javascript aktiviert sein",
+	"description": "Beschreibung",
+	"version": "Version",
+	"author": "Author"
+}

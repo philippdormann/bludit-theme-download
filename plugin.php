@@ -1,14 +1,18 @@
 <?php
-class themeDownload extends Plugin{
-    public function init(){
+class themeDownload extends Plugin
+{
+    public function init()
+    {
         $this->formButtons = false;
     }
-    
-    public function post(){
-        if(isset($_POST['install'])){
+
+    public function post()
+    {
+        error_reporting(E_ALL);
+        if (isset($_POST['install'])) {
             $error = 0;
-            $f = file_put_contents("theme_to_install.zip", fopen($_POST['install'], 'r'), LOCK_EX);//download theme zip
-            if(!$f){
+            $f = file_put_contents("theme_to_install.zip", fopen($_POST['install'], 'r'), LOCK_EX); //download theme zip
+            if (!$f) {
                 $error = -1;
             }
             $zip = new ZipArchive;
@@ -19,43 +23,52 @@ class themeDownload extends Plugin{
             } else {
                 $error = -2;
             }
-            switch($error){
+            switch ($error) {
                 case 0:
-                break;
+                    break;
                 case -1:
-                echo 'Could not download file (error code: -1)<br><a href="'.HTML_PATH_ADMIN_ROOT.'">go back to admin page</a>';
-                exit;
-                break;
+                    echo 'Could not download file (error code: -1)<br><a href="' . HTML_PATH_ADMIN_ROOT . '">go back to admin page</a>';
+                    exit;
+                    break;
                 case -2:
-                echo 'Could not open zip archive (error code: -2)<br><a href="'.HTML_PATH_ADMIN_ROOT.'">go back to admin page</a>';
-                break;                
+                    echo 'Could not open zip archive (error code: -2)<br><a href="' . HTML_PATH_ADMIN_ROOT . '">go back to admin page</a>';
+                    break;
                 default:
-                echo 'An unexpected error happend (error code: -9)<br><a href="'.HTML_PATH_ADMIN_ROOT.'">go back to admin page</a>';
-                break;
+                    echo 'An unexpected error happend (error code: -9)<br><a href="' . HTML_PATH_ADMIN_ROOT . '">go back to admin page</a>';
+                    break;
             }
             unlink("theme_to_install.zip");
         }
     }
-    
-    public function form(){
+
+    public function form()
+    {
         global $L;
-        $html  = '<div class="alert alert-primary" role="alert">'.$this->description().'</div>
-        <div class="alert alert-primary" role="alert"><strong>Info: </strong> This plugin requires JS to be enabled</div>
-        <input type="text" class="light-table-filter" data-table="order-table" placeholder="Search for anything..">
-        <script>"use strict"; var LightTableFilter=function (Arr){var filterInput; function _onInputEvent(e){filterInput=e.target; var tables=document.getElementsByClassName(filterInput.getAttribute("data-table")); Arr.forEach.call(tables, function (table){Arr.forEach.call(table.tBodies, function (tbody){Arr.forEach.call(tbody.rows, _filter);});});}function _filter(row){var text=row.textContent.toLowerCase(), val=filterInput.value.toLowerCase(); row.style.display=text.indexOf(val)===-1 ? "none" : "table-row";}return{init: function init(){var inputs=document.getElementsByClassName("light-table-filter"); Arr.forEach.call(inputs, function (input){input.oninput=_onInputEvent;});}};}(Array.prototype); document.addEventListener("readystatechange", function (){if (document.readyState==="complete"){LightTableFilter.init();}}); </script>
-        <table id="theme-download-extension-table" class="table mt-3 order-table"><thead><tr>
+        $html  = '<div class="alert alert-primary" role="alert"><strong>' . $L->g('info') . ': </strong> ' . $L->g('js_required') . '</div>
+        <input type="text" class="light-table-filter" data-table="order-table" placeholder="' . $L->g('search_for_anything') . '">
+        <script>var LightTableFilter=function(t){var e;function a(a){e=a.target;var o=document.getElementsByClassName(e.getAttribute("data-table"));t.forEach.call(o,function(e){t.forEach.call(e.tBodies,function(e){t.forEach.call(e.rows,n)})})}function n(t){var a=t.textContent.toLowerCase(),n=e.value.toLowerCase();t.style.display=-1===a.indexOf(n)?"none":"table-row"}return{init:function(){var e=document.getElementsByClassName("light-table-filter");t.forEach.call(e,function(t){t.oninput=a})}}}(Array.prototype);document.addEventListener("readystatechange",function(){"complete"===document.readyState&&LightTableFilter.init()});</script>
+        <table id="theme-download-extension-table" class="table mt-3 order-table">
+        <thead>
+        <tr>
         <th class="border-bottom-0 w-25" scope="col">Name</th>
-        <th class="border-bottom-0 d-none d-sm-table-cell" scope="col">Description</th>
-        <th class="text-center border-bottom-0 d-none d-lg-table-cell" scope="col">Version</th>
-        <th class="text-center border-bottom-0 d-none d-lg-table-cell" scope="col">Author</th>
-        </tr></thead><tbody id="theme-download-extension-table-body"></tbody></table>';
-        
+        <th class="border-bottom-0 d-none d-sm-table-cell" scope="col">' . $L->g('description') . '</th>
+        <th class="text-center border-bottom-0 d-none d-lg-table-cell" scope="col">' . $L->g('version') . '</th>
+        <th class="text-center border-bottom-0 d-none d-lg-table-cell" scope="col">' . $L->g('author') . '</th>
+        </tr>
+        </thead>
+        <tbody id="theme-download-extension-table-body"></tbody>
+        </table>';
+
         return $html;
     }
-    public function adminSidebar(){
-        return '<li class="nav-item"><a class="nav-link" href="'.HTML_PATH_ADMIN_ROOT.'configure-plugin/themeDownload">Theme Download</a></li>';
+    public function adminSidebar()
+    {
+        global $L;
+        return '<li class="nav-item"><a class="nav-link" href="' . HTML_PATH_ADMIN_ROOT . 'configure-plugin/themeDownload">' . $L->g('plugin_name') . '</a></li>';
     }
-    public function adminBodyEnd(){
+    public function adminBodyEnd()
+    {
+        global $L;
         $scripts  = '<script>
         $(function() {
             $.get("https://api.github.com/repos/bludit/themes-repository/contents/items", function(data) {
@@ -68,14 +81,16 @@ class themeDownload extends Plugin{
                         var theme_download = data.download_url;
                         if(data.download_url_v2 != ""){
                             var theme_download = data.download_url_v2;
+                        if(data.download_url_v2 != undefined){
+                            theme_download = data.download_url_v2;
                         }
                         var theme_information_url = data.information_url;
                         var theme_description = data.description;
                         var theme_author_username = data.author_username;
                         
                         var new_table_row = `<tr>
-                        <td class="align-middle pt-3 pb-3"><div>`+theme_name+`</div><div class="mt-1"><button name="install" class="btn btn-primary my-2" type="submit" value="`+theme_download+`">Install</button></div></td>
-                        <td class="align-middle d-none d-sm-table-cell"><div>`+theme_description+`</div><a href="`+theme_information_url+`" target="_blank">More information</a></td>
+                        <td class="align-middle pt-3 pb-3"><div>`+theme_name+`</div><div class="mt-1"><button onclick="themeInstallerDialog(theme_name)" name="install" class="btn btn-primary my-2" type="submit" value="`+theme_download+`">' . $L->g('install') . '</button></div></td>
+                        <td class="align-middle d-none d-sm-table-cell"><div>`+theme_description+`</div><a href="`+theme_information_url+`" target="_blank">' . $L->g('more_information') . '</a></td>
                         <td class="text-center align-middle d-none d-lg-table-cell"><span>`+theme_version+`</span></td>
                         <td class="text-center align-middle d-none d-lg-table-cell"><a target="_blank">`+theme_author_username+`</a></td>
                         </tr>`;
@@ -84,6 +99,9 @@ class themeDownload extends Plugin{
                     });
                 }
             });
+            function themeInstallerDialog(theme){
+
+            }
         });
         </script>';
         return $scripts;
