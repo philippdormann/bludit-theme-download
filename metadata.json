@@ -2,9 +2,9 @@
 	"author": "Philipp Dormann",
 	"email": "",
 	"website": "https://philippdormann.de",
-	"version": "1.0",
+	"version": "1.1.0",
 	"releaseDate": "",
 	"license": "MIT",
-	"compatible": "3.8.1",
+	"compatible": "3.10.0",
 	"notes": ""
 }
