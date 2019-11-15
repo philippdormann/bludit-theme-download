@@ -73,20 +73,21 @@ class themeDownload extends Plugin
         $(function() {
             $.get("https://api.github.com/repos/bludit/themes-repository/contents/items", function(data) {
                 for (var i = 0; i < data.length; i++) {
-                    $.get("https://raw.githubusercontent.com/bludit/themes-repository/master/items/"+data[i].name+"/metadata.json", function(data) {
-                        var data = JSON.parse(data);
-                        var theme_name = data.name;
-                        var theme_version = data.version;
-                        var theme_version = data.version;
-                        var theme_download = data.download_url;
-                        if(data.download_url_v2 != ""){
-                            var theme_download = data.download_url_v2;
-                        if(data.download_url_v2 != undefined){
-                            theme_download = data.download_url_v2;
+                    $.get("https://raw.githubusercontent.com/bludit/themes-repository/master/items/" + data[i].name + "/metadata.json", function (pluginInformation) {
+                        var pluginInformation = JSON.parse(pluginInformation);
+                        var theme_name = pluginInformation.name;
+                        var theme_version = pluginInformation.version;
+                        var theme_version = pluginInformation.version;
+                        var theme_download = pluginInformation.download_url;
+                        if (pluginInformation.download_url_v2 != "") {
+                            var theme_download = pluginInformation.download_url_v2;
                         }
-                        var theme_information_url = data.information_url;
-                        var theme_description = data.description;
-                        var theme_author_username = data.author_username;
+                        if (pluginInformation.download_url_v2 != undefined) {
+                            theme_download = pluginInformation.download_url_v2;
+                        }
+                        var theme_information_url = pluginInformation.information_url;
+                        var theme_description = pluginInformation.description;
+                        var theme_author_username = pluginInformation.author_username;
                         
                         var new_table_row = `<tr>
                         <td class="align-middle pt-3 pb-3"><div>`+theme_name+`</div><div class="mt-1"><button onclick="themeInstallerDialog(theme_name)" name="install" class="btn btn-primary my-2" type="submit" value="`+theme_download+`">' . $L->g('install') . '</button></div></td>
@@ -99,9 +100,6 @@ class themeDownload extends Plugin
                     });
                 }
             });
-            function themeInstallerDialog(theme){
-
-            }
         });
         </script>';
         return $scripts;
