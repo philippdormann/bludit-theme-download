@@ -1,14 +1,17 @@
 <?php
-class themeDownload extends Plugin{
-    public function init(){
+class themeDownload extends Plugin
+{
+    public function init()
+    {
         $this->formButtons = false;
     }
     
-    public function post(){
-        if(isset($_POST['install'])){
+    public function post()
+    {
+        if (isset($_POST['install'])) {
             $error = 0;
             $f = file_put_contents("theme_to_install.zip", fopen($_POST['install'], 'r'), LOCK_EX);//download theme zip
-            if(!$f){
+            if (!$f) {
                 $error = -1;
             }
             $zip = new ZipArchive;
@@ -19,7 +22,7 @@ class themeDownload extends Plugin{
             } else {
                 $error = -2;
             }
-            switch($error){
+            switch ($error) {
                 case 0:
                 break;
                 case -1:
@@ -28,7 +31,7 @@ class themeDownload extends Plugin{
                 break;
                 case -2:
                 echo 'Could not open zip archive (error code: -2)<br><a href="'.HTML_PATH_ADMIN_ROOT.'">go back to admin page</a>';
-                break;                
+                break;
                 default:
                 echo 'An unexpected error happend (error code: -9)<br><a href="'.HTML_PATH_ADMIN_ROOT.'">go back to admin page</a>';
                 break;
@@ -37,7 +40,8 @@ class themeDownload extends Plugin{
         }
     }
     
-    public function form(){
+    public function form()
+    {
         global $L;
         $html  = '<div class="alert alert-primary" role="alert">'.$this->description().'</div>
         <div class="alert alert-primary" role="alert"><strong>Info: </strong> This plugin requires JS to be enabled</div>
@@ -52,10 +56,12 @@ class themeDownload extends Plugin{
         
         return $html;
     }
-    public function adminSidebar(){
+    public function adminSidebar()
+    {
         return '<li class="nav-item"><a class="nav-link" href="'.HTML_PATH_ADMIN_ROOT.'configure-plugin/themeDownload">Theme Download</a></li>';
     }
-    public function adminBodyEnd(){
+    public function adminBodyEnd()
+    {
         $scripts  = '<script>
         $(function() {
             $.get("https://api.github.com/repos/bludit/themes-repository/contents/items", function(data) {
