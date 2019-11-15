@@ -79,10 +79,7 @@ class themeDownload extends Plugin
                         var theme_version = pluginInformation.version;
                         var theme_version = pluginInformation.version;
                         var theme_download = pluginInformation.download_url;
-                        if (pluginInformation.download_url_v2 != "") {
-                            var theme_download = pluginInformation.download_url_v2;
-                        }
-                        if (pluginInformation.download_url_v2 != undefined) {
+                        if ((pluginInformation.download_url_v2 != "")&&(pluginInformation.download_url_v2 != undefined)) {
                             theme_download = pluginInformation.download_url_v2;
                         }
                         var theme_information_url = pluginInformation.information_url;
