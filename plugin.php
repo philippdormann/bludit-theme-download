@@ -64,10 +64,9 @@ class themeDownload extends Plugin{
                         var data = JSON.parse(data);
                         var theme_name = data.name;
                         var theme_version = data.version;
-                        var theme_version = data.version;
                         var theme_download = data.download_url;
-                        if(data.download_url_v2 != ""){
-                            var theme_download = data.download_url_v2;
+                        if(data.download_url_v2 != undefined){
+                            theme_download = data.download_url_v2;
                         }
                         var theme_information_url = data.information_url;
                         var theme_description = data.description;
